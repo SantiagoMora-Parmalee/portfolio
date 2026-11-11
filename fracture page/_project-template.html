@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Project Title · Santiago Mora-Parmalee</title>
+<meta name="description" content="Project description.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/fracture.css">
+</head>
+<body class="fx">
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="mark">SM</span>Santiago Mora-Parmalee</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html#contents">Projects</a>
+      <a href="index.html#about">Experience</a>
+      <a class="pill" href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- PROJECT TEMPLATE
+       1. Copy this file (e.g. gravitas.html) and put the project's media in media/gravitas/.
+          Clips: MP4 + a .jpg thumbnail with the same name. Images: JPEG (not WebP: the Quinnipiac server will not serve .webp).
+       2. Fill in the hero, the jump bar links, and one <section class="part"> per topic.
+          Keep each topic to one or two sentences; let the reel do the talking.
+       3. On index.html: add a tile to the Contents list and copy one <section class="post"> block.
+       4. Point the previous project's "Next project" card at this page, and this page's card at the next one. -->
+
+  <section class="fx-hero fx-proj" aria-labelledby="page-title">
+    <canvas class="fx-field" aria-hidden="true"></canvas>
+    <div class="fx-inner">
+      <div class="fx-text">
+        <a class="back" href="index.html#contents">All work</a>
+        <h1 id="page-title">Project Title</h1>
+        <p class="hero-lede">One or two sentences: what it is and what you did.</p>
+        <ul class="facts"><li><b>Role</b>Your role</li><li><b>Engine</b>Unity</li><li><b>Platform</b>PC</li></ul>
+      </div>
+      <div class="fx-stage" data-origin="0.1 0.99" data-origin-stacked="0.92 0.0">
+        <div class="shard"><video class="loop" src="../media/my-project/hero.mp4" poster="../media/my-project/hero.jpg" data-len="0:10" muted loop playsinline preload="none" aria-label="Describe the clip"></video></div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="jump" aria-label="Jump to a section">
+    <div class="wrap"><div class="jump-inner"><a href="#topic-one">Topic one</a><a href="#topic-two">Topic two</a></div></div>
+  </nav>
+
+  <section class="part" id="topic-one" aria-labelledby="topic-one-t">
+    <div class="wrap part-head">
+      <h2 id="topic-one-t">Topic one</h2>
+      <p>One or two sentences about the result.</p>
+      <ul class="chips"><li>Tag</li><li>Tag</li></ul>
+    </div>
+    <div class="reel" data-reel>
+      <div class="reel-track" role="group" aria-label="Topic one">
+        <!-- Clip slide: set --ar to the clip's width / height -->
+        <figure class="slide" style="--ar:16 / 9"><video class="loop" src="../media/my-project/clip.mp4" poster="../media/my-project/clip.jpg" data-len="0:10" muted loop playsinline preload="none" aria-label="Describe the clip"></video><figcaption class="cap">Caption</figcaption></figure>
+        <!-- Image slide. Add class "fit" for screenshots and graphs so nothing gets cropped. -->
+        <figure class="slide fit" style="--ar:16 / 9"><button class="zoom" type="button" aria-label="Enlarge: describe image"><img src="../media/my-project/graph.jpg" loading="lazy" alt="Describe image"></button><figcaption class="cap">Caption</figcaption></figure>
+      </div>
+      <div class="wrap reel-bar">
+        <span class="count" aria-live="polite">1 / 2</span>
+        <span class="btns"><button class="circle-arrow" type="button" data-prev aria-label="Previous">&lsaquo;</button><button class="circle-arrow" type="button" data-next aria-label="Next">&rsaquo;</button></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>© 2026 Santiago Mora-Parmalee</span>
+    <a href="index.html#contents">Back to contents</a>
+  </div>
+</footer>
+
+<script src="js/site.js"></script>
+<script src="js/fracture.js"></script>
+</body>
+</html>

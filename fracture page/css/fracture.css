@@ -1,0 +1,184 @@
+/* Fracture look. Loaded after site.css, only on pages with <body class="fx">.
+   Navy ground, a field of glass cells behind the hero that refract the project
+   clips (each cell a little behind in time), and every project sitting whole
+   on its own dark shard. Colours and fonts are the tokens at the top. */
+body.fx {
+  color-scheme: dark;
+  --ground: #0a0c24;      /* navy page, also the veins between glass cells */
+  --tile: #141843;        /* raised surfaces */
+  --ink: #f2f4ff;
+  --ink-2: #a7addb;
+  --line: #2a3072;
+  --panel: #141843;
+  --panel-ink: #f2f4ff;
+  --panel-dim: #a7addb;
+  --marigold: #ff4f9e;    /* the action colour is now the pink fringe */
+  --marigold-deep: #ff7ab6;
+  --cyan: #45e4ff;
+  --on-accent: #0a0c24;
+
+  --font-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+}
+body.fx h1, body.fx h2, body.fx h3 { font-stretch: 78%; font-weight: 800; letter-spacing: -0.015em; }
+
+/* ---------- pieces of the old theme that assumed dark ink on light ---------- */
+.fx .site-head { position: relative; z-index: 3; }
+.fx .site-nav { padding: 6px 6px 6px 22px; border-radius: 999px; background: rgb(10 12 36 / 0.72); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.fx .site-nav a:not(.pill) { color: var(--ink); }
+.fx .site-nav a:not(.pill):hover { color: var(--marigold-deep); }
+.fx .home-head .wrap { max-width: 1680px; }
+.fx .brand { font-stretch: 85%; min-width: 0; }
+.fx .brand .mark { color: var(--on-accent); flex: none; }
+.fx .pill { background: var(--ink); color: var(--on-accent); }
+.fx .pill:hover { background: #fff; }
+.fx .pill.gold { background: var(--marigold); color: var(--on-accent); }
+.fx .pill.gold:hover { background: var(--marigold-deep); }
+.fx .pill.ghost { background: transparent; color: var(--ink); }
+.fx .pill.ghost:hover { background: rgb(242 244 255 / 0.1); }
+.fx .site-nav .pill { color: var(--on-accent); }
+.fx .circle-arrow:hover { color: var(--on-accent); }
+.fx .contents a { background: var(--tile); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.fx .contents a:hover { background: #1b2058; box-shadow: inset 0 0 0 2px var(--marigold); }
+.fx .contents .thumb { background: #05061a; }
+.fx .slide .cap { color: var(--on-accent); }
+.fx .job .role { color: var(--marigold-deep); }
+.fx dialog.lightbox button { color: var(--on-accent); }
+.fx .card .chips li { background: #0a0c24; }
+.fx .slide.fit > img, .fx .slide.fit > button img { background: #05061a; }
+.fx .jump-inner { background: rgb(20 24 67 / 0.92); box-shadow: inset 0 0 0 1px var(--line); }
+.fx .jump a[aria-current="true"] { color: var(--on-accent); }
+.fx .next-card { color: var(--on-accent); }
+.fx .next-card .txt strong { font-stretch: 78%; font-weight: 800; }
+.fx .next-card:hover { background: var(--marigold-deep); }
+
+/* ---------- hero ---------- */
+.fx-hero { position: relative; isolation: isolate; overflow-x: clip; }
+.fx-field {
+  position: absolute; z-index: 0; pointer-events: none;
+  left: 0; right: 0; top: -130px; bottom: -40px;   /* runs up behind the header */
+  width: 100%; height: calc(100% + 170px);
+  -webkit-mask-image: linear-gradient(#000 calc(100% - 150px), transparent calc(100% - 8px));
+          mask-image: linear-gradient(#000 calc(100% - 150px), transparent calc(100% - 8px));
+}
+.fx-inner {
+  position: relative; z-index: 1;
+  max-width: 1680px; margin-inline: auto; padding-inline: var(--gutter);
+  min-height: calc(100svh - 84px);
+  display: grid; align-items: center; gap: clamp(20px, 3vw, 56px);
+  grid-template-columns: minmax(300px, 0.6fr) minmax(0, 1.7fr);
+  padding-block: 20px 56px;
+}
+.fx-text { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.fx-text .hero-name { font-family: var(--font-display); font-stretch: 85%; font-weight: 600; font-size: clamp(1.05rem, 1.5vw, 1.3rem); color: var(--ink-2); }
+.fx-text h1 { font-size: clamp(2.7rem, 4.5vw, 5rem); line-height: 0.94; text-wrap: balance; text-shadow: 0 0 28px var(--ground); }
+.fx-text .hero-lede { font-size: 1.15rem; color: var(--ink-2); max-width: 30ch; text-shadow: 0 0 16px var(--ground); }
+.fx-text .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* The stage keeps one shape at every size, so the pieces below can be placed
+   in percentages and never touch each other. */
+.fx-stage {
+  --cap: max(3.6cqw, 28px);
+  position: relative; container-type: inline-size;
+  width: min(100%, calc((100svh - 190px) / 0.72));
+  aspect-ratio: 1000 / 720;
+  justify-self: end;
+}
+
+/* One project per shard: the clip is shown whole (never cropped or covered),
+   its name sits on the glass underneath it. */
+.shard {
+  position: absolute; left: var(--x); top: var(--y); width: var(--w);
+  display: block; text-decoration: none; color: var(--ink);
+  background: rgb(10 12 36 / 0.86);
+  transform: perspective(1400px) rotate(var(--r)) rotateY(var(--ry, 0deg)) rotateX(var(--rx, 0deg));
+  transition: transform .35s cubic-bezier(.2, .8, .2, 1);
+  animation: fx-in .9s cubic-bezier(.16, 1, .3, 1) backwards;
+  animation-delay: calc(var(--i) * 70ms + 120ms);
+}
+.shard.has-rim { background: none; }
+.shard:nth-child(1) { --i: 0; --x: 1.25%;  --y: 4.06%;  --w: 46.5%; --r: -3deg;   --ry: 5deg;  --rx: 1.5deg; --fx: 22%;  --fy: 30%; }
+.shard:nth-child(2) { --i: 1; --x: 52.45%; --y: 7.11%;  --w: 46.5%; --r: 2.5deg;  --ry: -5deg; --rx: 1deg;   --fx: -22%; --fy: 28%; }
+.shard:nth-child(3) { --i: 2; --x: 1%;     --y: 61.48%; --w: 30%;   --r: 4deg;    --ry: 6deg;  --rx: -2deg;  --fx: 60%;  --fy: -30%; }
+.shard:nth-child(4) { --i: 3; --x: 35%;    --y: 66.06%; --w: 30%;   --r: -2.5deg; --ry: 0deg;  --rx: -3deg;  --fx: 0%;   --fy: -40%; }
+.shard:nth-child(5) { --i: 4; --x: 69%;    --y: 61.89%; --w: 30%;   --r: 3.5deg;  --ry: -6deg; --rx: -2deg;  --fx: -60%; --fy: -30%; }
+@keyframes fx-in {
+  from { opacity: 0; transform: perspective(1400px) translate(var(--fx), var(--fy)) rotate(0deg) scale(.8); }
+}
+.shard:hover, .shard:focus-visible { transform: perspective(1400px) rotate(0deg) scale(1.035); z-index: 2; }
+.shard:focus-visible { outline: 3px solid var(--cyan); outline-offset: 6px; border-radius: 2px; }
+
+.shard video {
+  position: relative; z-index: 1;
+  width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; background: #000;
+  cursor: pointer;
+}
+.shard img { position: relative; z-index: 1; width: 100%; height: auto; }
+.shard .play-badge { display: none; }   /* nothing sits on top of the clip */
+.shard-cap {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  height: var(--cap); padding-inline: 2px;
+  white-space: nowrap;
+}
+.shard-cap strong { font-family: var(--font-display); font-stretch: 80%; font-weight: 700; font-size: clamp(14px, 1.85cqw, 23px); line-height: 1; }
+.shard-cap span { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--ink-2); font-size: clamp(12px, 1.3cqw, 15px); line-height: 1; }
+.shard:hover .shard-cap strong, .shard:focus-visible .shard-cap strong { color: var(--marigold-deep); }
+
+/* The irregular glass piece each project sits on. fracture.js cuts the shape. */
+.shard-glass, .shard-rim { position: absolute; z-index: 0; pointer-events: none; }
+.shard-glass {
+  background:
+    linear-gradient(118deg, transparent 0 31%, rgb(255 255 255 / 0.09) 31.5% 34%, transparent 34.5% 61%, rgb(255 255 255 / 0.05) 61.5% 62.5%, transparent 63%),
+    linear-gradient(155deg, rgb(28 34 98 / 0.88), rgb(8 10 32 / 0.93) 55%);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4); backdrop-filter: blur(10px) saturate(1.4);
+}
+.shard-rim { overflow: visible; }
+.shard-rim polygon { fill: none; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.shard-rim .c { stroke: var(--cyan); stroke-width: 2.5; opacity: .9; }
+.shard-rim .p { stroke: var(--marigold); stroke-width: 2.5; opacity: .9; }
+.shard-rim .w { stroke: #fff; stroke-width: 1.25; }
+.shard-rim .c, .shard-rim .p { transition: transform .35s ease; }
+.shard-rim .c { transform: translate(-2.5px, -1.5px); }
+.shard-rim .p { transform: translate(2.5px, 1.5px); }
+.shard:hover .shard-rim .c, .shard:focus-visible .shard-rim .c { transform: translate(-7px, -3px); }
+.shard:hover .shard-rim .p, .shard:focus-visible .shard-rim .p { transform: translate(7px, 3px); }
+
+/* ---------- project pages: one shard holding the page's clip ---------- */
+.fx-proj .fx-inner {
+  max-width: var(--maxw); min-height: min(74svh, 700px);
+  grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.5fr);
+  padding-block: 12px 48px;
+}
+.fx-proj .fx-text { gap: 18px; }
+.fx-proj .fx-text h1 { font-size: clamp(2.7rem, 4.6vw, 4.6rem); }
+.fx-proj .fx-text .hero-lede { max-width: 38ch; }
+.fx-proj .back { color: var(--ink-2); align-self: flex-start; }
+.fx-proj .back:hover { color: var(--marigold-deep); }
+.fx-proj .fx-stage { width: min(100%, calc((74svh - 90px) / 0.64)); aspect-ratio: 1000 / 640; }
+.fx-proj .fx-stage > .shard:nth-child(1) { --x: 7%; --y: 12.2%; --w: 86%; --r: -2.5deg; --ry: -5deg; --rx: 1.5deg; --fx: -8%; --fy: 10%; }
+.fx-proj .shard:hover { transform: perspective(1400px) rotate(0deg) scale(1.02); }
+.fx-proj + .jump { margin-top: 0; }
+
+/* ---------- phones and narrow windows: the pieces fall into one column ---------- */
+@media (max-width: 900px) {
+  .fx-inner { grid-template-columns: minmax(0, 1fr); min-height: 0; padding-block: 12px 40px; gap: 28px; }
+  .fx-text h1 { font-size: clamp(2.6rem, 11vw, 4rem); }
+  .fx-stage { --cap: max(7.5cqw, 30px); width: 100%; aspect-ratio: 1000 / 3180; justify-self: stretch; }
+  .fx-stage > .shard { --w: 86%; --ry: 0deg; --rx: 0deg; --fx: 0%; --fy: 12%; }
+  .fx-stage > .shard:nth-child(1) { --x: 4%;  --y: 1.59%;  --r: -2deg; }
+  .fx-stage > .shard:nth-child(2) { --x: 10%; --y: 21.4%;  --r: 2deg; }
+  .fx-stage > .shard:nth-child(3) { --x: 4%;  --y: 41.21%; --r: -1.5deg; }
+  .fx-stage > .shard:nth-child(4) { --x: 10%; --y: 61.03%; --r: 2deg; }
+  .fx-stage > .shard:nth-child(5) { --x: 4%;  --y: 80.84%; --r: -2deg; }
+  .fx-proj .fx-inner { min-height: 0; grid-template-columns: minmax(0, 1fr); }
+  .fx-proj .fx-stage { width: 100%; aspect-ratio: 1000 / 660; }
+  .fx-proj .fx-stage > .shard:nth-child(1) { --x: 5%; --y: 8%; --w: 90%; --r: -2deg; --ry: 0deg; --rx: 0deg; --fx: 0%; --fy: 12%; }
+  .shard-cap strong { font-size: clamp(15px, 4.6cqw, 24px); }
+  .shard-cap span { font-size: clamp(12px, 3.3cqw, 16px); }
+}
+@media (max-width: 720px) {
+  .fx .site-nav { padding: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shard { animation: none; }
+}
